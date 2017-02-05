@@ -103,7 +103,6 @@ Now edit your `~/.tmux.conf` to use the scripts:
 ```vim
 set-option -g status on
 set-option -g status-interval 2
-set-option -g status-utf8 on
 set-option -g status-justify "centre"
 set-option -g status-left-length 60
 set-option -g status-right-length 90
@@ -130,6 +129,13 @@ Some segments e.g. cwd and cvs_branch needs to find the current working director
 
 ```bash
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+```
+
+
+If the active shell is Fish, PS1 is not being set normally. Instead, it has a `fish_prompt` function that is being called when prompt rendering is required. This means that one can append the following command at the end of the function in `fish_prompt.fish` file:
+
+```fish
+if set -q TMUX; tmux setenv TMUXPWD_(tmux display -p "#D" | tr -d '%') $PWD; end
 ```
 
 # Configuration
